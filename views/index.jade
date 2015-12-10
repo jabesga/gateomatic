@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+html
+    head
+        meta(charset="UTF-8")
+        title Pagina de prueba
+    body
+        h2(id="status")
+
+        form(id='button_form' method="post")
+            input(type="submit" id="button" value="ABRIR PUERTA DEL POLÍGONO")
+
+        script(src="/javascripts/jquery.js")
+
+        script.
+            $('#button_form').on('submit', function(event){
+                document.getElementById("button").style.display = 'none';
+                document.getElementById("status").innerHTML = "EJECUTANDO PETICION...";
+                event.preventDefault();
+                $.ajax({
+                    url : "/",
+                    type : "POST",
+                    data : {},
+
+                    success : function(json) {
+                        console.log(json);
+                        if(json['success'] == true){
+                            document.getElementById("status").innerHTML = "PUERTA DEL POLÍGONO ABIERTA";
+                        }
+                        else if(json['success'] == false){
+                            document.getElementById("status").innerHTML = "HUBO UN PROBLEMA DE CONEXIÓN";
+                        }
+                    },
+                    error : function(xhr,errmsg,err) {
+                        //console.log(xhr.status + ": " + xhr.responseText);
+                        document.getElementById("status").innerHTML = "CONSULTAR ERROR EN LA CONSOLA DE JS";
+                    }
+                });
+            });
